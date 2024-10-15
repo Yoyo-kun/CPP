@@ -10,6 +10,62 @@
 
 2.7 和 8.1 / 3 的区别，记住比较两个浮点数的大小仅关注极小误差量！！！
 
+## 拓展知识
+
+### 1. **Git**
+Git 是一个**版本控制系统**，用于跟踪代码的更改和管理项目的多个版本。它让多个开发者可以在同一个项目上协作工作，并且可以随时查看和恢复以前的代码状态。
+
+- **常见命令**：
+  - `git init`：初始化一个新的 Git 仓库。
+  - `git clone <repo-url>`：从远程仓库下载代码到本地。
+  - `git add <file>`：将文件的修改添加到暂存区。
+  - `git commit -m "message"`：提交修改，并附上描述性信息。
+  - `git push`：将本地提交推送到远程仓库。
+  - `git pull`：从远程仓库拉取最新的代码。
+
+Git 用于管理代码版本，你可以通过 `git log` 查看项目的历史版本，也可以使用分支（branch）机制来进行并行开发。
+
+### 2. **Make**
+`make` 是一个构建工具，主要用于自动化编译过程。`make` 通过读取一个名为 `Makefile` 的文件来定义如何编译和链接代码。
+
+- **Makefile 的作用**：
+  - 设定编译规则：告诉 `make` 如何处理源代码（比如哪些文件需要编译，如何链接成最终的可执行文件）。
+  - 自动处理依赖：如果你修改了某个文件，`make` 只会重新编译那些与此文件相关的部分。
+  
+  例如，一个简单的 `Makefile` 可能会告诉 `make` 使用 `gcc` 编译 `main.c`：
+
+  ```makefile
+  all:
+      gcc -o my_program main.c
+  ```
+
+运行 `make` 时会根据规则编译代码。
+
+### 3. **GCC（GNU Compiler Collection）**
+GCC 是一个开源的**编译器集合**，支持多种编程语言（如 C、C++）。它是用来将源代码编译为二进制可执行文件的工具。你会在 Linux 和 Windows（通过 MinGW 或 MSYS2）中频繁使用它。
+
+- **常见命令**：
+  - `gcc main.c -o my_program`：编译 `main.c` 文件，并生成名为 `my_program` 的可执行文件。
+  - `g++`：编译 C++ 代码时使用。
+
+GCC 允许你设置编译优化级别、调试选项和编译警告级别等。
+
+### 4. **MinGW（Minimalist GNU for Windows）**
+MinGW 是一组工具，帮助你在**Windows** 上使用 GNU 工具链（如 GCC）。它让你能够在 Windows 环境中编写、编译和运行 C/C++ 程序。MinGW 还包括 `make`、`gdb` 等开发工具。
+
+- **主要功能**：
+  - 提供一个 GCC 编译器的 Windows 版本。
+  - 提供工具（如 `make`）来管理编译过程。
+
+### 5. **MSYS2**
+MSYS2 是一个用于在 Windows 上运行类似 Linux 的开发工具的环境，它提供了一组工具来模拟 Linux shell，便于在 Windows 系统上开发和编译程序。它与 MinGW 配合使用，提供一个 `pacman` 包管理器，可以方便地安装开发中需要的依赖。
+
+- **pacman**：类似 Linux 中的包管理器（如 apt 或 yum），通过 `pacman` 你可以方便地安装各种开发库和工具。
+  - `pacman -S <package>`：安装软件包。
+  - `pacman -Sy`：更新软件包列表。
+
+MSYS2 让你可以使用 Linux 开发者习惯的工具集（如 `bash`、`vim`、`make`）在 Windows 上进行开发。
+
 ## ***第一部分 —— 专业 C++ 简介***
 
 ***
@@ -98,7 +154,7 @@ int main()
 >     > - ```c++
 >     >     #ifdef [key]
 >     >     #endif
->     >         
+>     >                 
 >     >     #ifndef [key]
 >     >     #endif
 >     >     // ifdef("if defined") 块或 ifndef("if not defined") 块中的代码被有条件地包含或者舍弃；
@@ -2269,7 +2325,13 @@ int main()
 >     > 在 C++17 后，与 **auto** 结合有以下结果：
 >     >
 >     > ```c++
+>     > // Copy list initialization
+>     > auto a = {11};	// initializer_list<int>
+>     > auto b = {11, 22};	// initializer_list<int>
 >     > 
+>     > // Direct list initialization
+>     > auto c {11};	// int
+>     > auto d {11, 22};	// Error, too many elements.
 >     > ```
 >
 >  > 注意：
@@ -6111,20 +6173,20 @@ int main()
 >         // 为指向 Simple指针 的数组分配空间，来存储 Simple指针
 >         const size_t size = 4;
 >         Simple** mySimplePtrArray = new Simple * [size];
->             
+>                     
 >         // Allocate an object for each pointer.
 >         for (size_t i = 0; i < size; i++)
 >         {
 >         	mySimplePtrArray[i] = new Simple();
 >         }
 >         // Use mySimplePtrArray...
->             
+>                     
 >         // Delete each allocated object.
 >         for (size_t i = 0; i < size; i++)
 >         {
 >         	delete mySimplePtrArray[i];
 >         }
->             
+>                     
 >         // Delete the array itself.
 >         delete[] mySimplePtrArray;
 >         mySimplePtrArray = nullptr;
@@ -6456,6 +6518,12 @@ int main()
 
 ### 7.4智能指针
 
+> > RAII 是 C++ 中的一个编程惯用法，意思是 **Resource Acquisition Is Initialization**，中文通常翻译为“资源获取即初始化”。
+> >
+> > RAII 的核心思想是：在对象的生命周期内获取和释放资源。即，**资源的获取与对象的创建（初始化）绑定在一起，资源的释放与对象的销毁绑定在一起**。当对象的作用域结束时，C++ 会自动调用对象的析构函数，这时会自动释放该对象占用的资源。
+> >
+> > 智能指针就是 RAII 思想的具体体现之一。
+> >
 > > 所以，思考智能指针的心理应该被视为 “一个带着编号的房产证”，这样我们就很容易理解所谓“所有权”的问题：
 > >
 > > - unique_ptr 指针，相当于私有房产的房产证，房产证只限家人有；
@@ -6681,13 +6749,13 @@ int main()
 >     	*p = value;
 >     	return p;
 >     }
->         
+>                 
 >     int main()
 >     {
 >     	std::unique_ptr<int, decltype(free)*> myIntSmartPtr(malloc_int(42), free);
 >     	return 0;
 >     }
->         
+>                 
 >     // 模板类型参数自定义 deleter：
 >     std::unique_ptr<T, Deleter> myPtr(new T, myCustomDeleter);
 >     // T 是智能指针所管理资源的类型。
@@ -6706,27 +6774,27 @@ int main()
 >     ```c++
 >     #include <iostream>
 >     #include <memory>
->         
+>                 
 >     // 虚拟文件类
 >     class VirtualFile {
 >     public:
 >     	VirtualFile(const std::string& filename) : filename(filename) {
 >     		std::cout << "Opening file: " << filename << std::endl;
 >     	}
->         
+>                 
 >     	~VirtualFile() {
 >     		std::cout << "Closing file: " << filename << std::endl;
 >     	}
->         
+>                 
 >     	void write(const std::string& data) {
 >     		std::cout << "Writing to file: " << filename << std::endl;
 >     		// 写入操作
 >     	}
->         
+>                 
 >     private:
 >     	std::string filename;
 >     };
->         
+>                 
 >     // 自定义 deleter 函数
 >     void closeVirtualFile(VirtualFile* file)
 >     {
@@ -6735,14 +6803,14 @@ int main()
 >     		delete file;
 >     	}
 >     }
->         
+>                 
 >     int main() {
 >     	// 使用自定义 deleter 的 unique_ptr
 >     	std::unique_ptr<VirtualFile, decltype(&closeVirtualFile)> filePtr(new VirtualFile("example.txt"), &closeVirtualFile);
->         
+>                 
 >     	// 使用文件句柄进行操作
 >     	filePtr->write("Hello, World!");
->         
+>                 
 >     	// unique_ptr 离开作用域时，closeVirtualFile 将被调用
 >     	return 0;
 >     }
@@ -7030,26 +7098,26 @@ int main()
 >         {
 >         	// ComplexResource class definition
 >         };
->             
+>                     
 >         class ResourceManager
 >         {
 >         private:
 >         	std::shared_ptr<ComplexResource> sharedResource;
->             
+>                     
 >         public:
 >         	void initialize()
 >         	{
 >         		sharedResource = std::make_shared<ComplexResource>();
 >         	}
->             
+>                     
 >         	void useResource()
 >         	{
 >         		// 使用资源的逻辑
 >         	}
->             
+>                     
 >         	// 其他复杂的资源管理逻辑
 >         };
->             
+>                     
 >         ResourceManager manager1;
 >         ResourceManager manager2 = manager1;  // 共享所有权
 >         ```
@@ -7067,7 +7135,7 @@ int main()
 >     	Foo(int value) : mData(value) {}
 >     	int mData;
 >     }
->         
+>                 
 >     auto foo = make_shared<Foo>(42);
 >     auto aliasing = shared_ptr<int>(foo, &foo->mData);
 >     ```
@@ -7225,14 +7293,14 @@ int main()
 >
 >     ```c++
 >     cppCopy codeclass Observer;
->         
+>                 
 >     class Subject
 >     {
 >     public:
 >     	void addObserver(std::weak_ptr<Observer> observer);
 >     	void notifyObservers();
 >     };
->         
+>                 
 >     class Observer
 >     {
 >     public:
@@ -7247,7 +7315,7 @@ int main()
 >     {
 >     private:
 >     	std::weak_ptr<Resource> cachedResource;
->         
+>                 
 >     public:
 >     	std::shared_ptr<Resource> getResource()
 >     	{
@@ -7960,7 +8028,7 @@ int main()
 >     {
 >     	this->value = value;
 >     }
->         
+>                 
 >     // 然而，如果遵循第 3 章所讲述的命名规则，那么永远不会遇到这样的问题
 >     ```
 >
@@ -8157,7 +8225,7 @@ int main()
 >         ```C++
 >         auto smartCellp = make_unique<SpreadsheetCell>(4);
 >         // ... do something with the cell, no need to delete the smart pointer.
->             
+>                     
 >         // Or with raw pointers, without smart pointers (not recommended)
 >         SpreadsheetCell* myCellp = new SpreadsheetCell(5);
 >         SpreadsheetCell* anotherCellp = nullptr;
@@ -8167,7 +8235,7 @@ int main()
 >         myCellp = nullptr;
 >         delete anotherCellp;
 >         anotherCellp = nullptr;
->             
+>                     
 >         // 注意可以声明一个指向 SpreadsheetCell 对象的指针，而不立即调用构造函数。堆栈中对象在声明时会调用构造函数
 >         ```
 >
@@ -9036,7 +9104,7 @@ int main()
 >     SpreadsheetCell::SpreadsheetCell(const SpreadsheetCell& src)
 >     	: mValue(src.mValue)
 >     {
->         
+>                 
 >     }
 >     ```
 
@@ -9473,7 +9541,7 @@ int main()
 >     	Spreadsheet(size_t width, size_t height);
 >     	Spreadsheet(const Spreadsheet& src) = delete;
 >     	~Spreadsheet();
->         
+>                 
 >     	Spreadsheet& operator=(const Spreadsheet& rhs) = delete;
 >     	// Code omitted for brevity
 >     };
@@ -10549,7 +10617,7 @@ int main()
 >       	explicit SpreadsheetCell(std::string_view initialValue);
 >       	// Remainder omitted for brevity
 >       };
->           
+>                   
 >       /* explicit 关键字只在类定义内使用，只适用于只有一个参数的构造函数，例如单参构造函数或为参数提供默认值的多参构造函数。*/
 >       ```
 >
@@ -10571,7 +10639,7 @@ int main()
 >       aThirdCell = myCell + 5.6; // Works fine.
 >       aThirdCell = 4 + myCell; // FAILS TO COMPILE!
 >       aThirdCell = 5.6 + myCell; // FAILS TO COMPILE!
->           
+>                   
 >       /*当 Spreadsheetcell 对象在运算符的左边时，隐式转换正常运行，但在右边时无法运行。加法是可互换的，因此这里存在错误。问题在于必须在 SpreadsheetCell 对象上调用 operator+方法，对象必须在 operato什的左边。这是 C++语言定义的方式，因此使用 operator+ 方法无法让上面的代码运行。*/
 >       ```
 >
@@ -10592,7 +10660,7 @@ int main()
 >       {
 >       	// Omitted for brevity
 >       };
->           
+>                   
 >       SpreadsheetCell operator+(const SpreadsheetCell& Ihs, const SpreadsheetCell& rhs);
 >       ```
 >
@@ -11143,11 +11211,11 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >       public:
 >       	void foo() { }
 >       };
->           
+>                   
 >       class Derived : protected Base 
 >       {
 >       };
->           
+>                   
 >       Derived d;
 >       // d.foo(); // 错误：无法从外部访问 foo，因为它变成了 protected
 >       ```
@@ -13760,7 +13828,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->               
+>                       
 >           class Base
 >           {
 >           public:
@@ -13769,7 +13837,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Base::staticFunction called" << endl;
 >           	}
 >           };
->               
+>                       
 >           class Derived : public Base
 >           {
 >           public:
@@ -13778,7 +13846,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Derived::staticFunction called" << endl;
 >           	}
 >           };
->               
+>                       
 >           int main()
 >           {
 >           	Derived::staticFunction();  // 编译时确定，调用 Derived 的静态函数
@@ -13798,7 +13866,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->               
+>                       
 >           class Base
 >           {
 >           public:
@@ -13807,7 +13875,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Base::nonVirtualFunction called" << endl;
 >           	}
 >           };
->               
+>                       
 >           class Derived : public Base
 >           {
 >           public:
@@ -13816,7 +13884,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Derived::nonVirtualFunction called" << endl;
 >           	}
 >           };
->               
+>                       
 >           int main()
 >           {
 >           	Base* ptr = new Derived();
@@ -13837,7 +13905,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->               
+>                       
 >           class Base
 >           {
 >           public:
@@ -13846,7 +13914,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Base::virtualFunction called" << endl;
 >           	}
 >           };
->               
+>                       
 >           class Derived : public Base
 >           {
 >           public:
@@ -13855,7 +13923,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Derived::virtualFunction called" << endl;
 >           	}
 >           };
->               
+>                       
 >           int main()
 >           {
 >           	Base* ptr = new Derived();
@@ -13876,7 +13944,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->               
+>                       
 >           class Base
 >           {
 >           public:
@@ -13885,7 +13953,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Base: " << x << endl;
 >           	}
 >           };
->               
+>                       
 >           class Derived : public Base
 >           {
 >           public:
@@ -13894,7 +13962,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Derived: " << x << endl;
 >           	}
 >           };
->               
+>                       
 >           int main()
 >           {
 >           	Base* ptr = new Derived();
@@ -13915,13 +13983,13 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->               
+>                       
 >           template <typename T>
 >           T add(T a, T b)
 >           {
 >           	return a + b;
 >           }
->               
+>                       
 >           int main()
 >           {
 >           	cout << add(5, 3) << endl;  // 编译时确定，生成 int add(int, int)
@@ -13969,12 +14037,12 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->               
+>                       
 >           inline void printInline()
 >           {
 >           	cout << "Inline function called" << endl;
 >           }
->               
+>                       
 >           int main()
 >           {
 >           	printInline();  // 编译时决定是否展开为内联代码
@@ -13993,12 +14061,12 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->               
+>                       
 >           int main()
 >           {
 >           	auto x = 5;  // 编译时确定类型为 int
 >           	auto y = 3.14;  // 编译时确定类型为 double
->               
+>                       
 >           	cout << x << " " << y << endl;
 >           	return 0;
 >           }
@@ -14015,19 +14083,19 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->               
+>                       
 >           class Base
 >           {
 >           	virtual void dummy() {}  // 必须有虚函数才能使用 dynamic_cast
 >           };
->               
+>                       
 >           class Derived : public Base {};
->               
+>                       
 >           int main()
 >           {
 >           	Base* basePtr = new Derived();
 >           	Derived* derivedPtr = dynamic_cast<Derived*>(basePtr);  // 运行时确定
->               
+>                       
 >           	if (derivedPtr)
 >           	{
 >           		cout << "Successful cast" << endl;
@@ -14036,7 +14104,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           	{
 >           		cout << "Failed cast" << endl;
 >           	}
->               
+>                       
 >           	delete basePtr;
 >           	return 0;
 >           }
@@ -14054,19 +14122,19 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           #include <iostream>
 >           #include <typeinfo>
 >           using namespace std;
->                   
+>                                   
 >           class Base
 >           {
 >           public:
 >           	virtual ~Base() = default;
 >           };
->                   
+>                                   
 >           class Derived : public Base {};
->                   
+>                                   
 >           int main()
 >           {
 >           	Base* basePtr = new Derived();
->                   
+>                                   
 >           	cout << "Type of basePtr: " << typeid(*basePtr).name() << endl;  // 运行时确定类型
 >           	delete basePtr;
 >           	return 0;
@@ -14965,7 +15033,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >       {
 >       	int pub;
 >       };
->           
+>                   
 >       struct Derived : Base
 >       {  // 默认 public 继承
 >       	void func()
@@ -15039,7 +15107,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >       		/* 启动引擎的代码 */
 >       	}
 >       };
->           
+>                   
 >       class Fuselage
 >       {
 >       public:
@@ -15048,7 +15116,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >       		/* 修理机身的代码 */
 >       	}
 >       };
->           
+>                   
 >       class Airplane : protected Engine, protected Fuselage
 >       {
 >       public:
@@ -17265,6 +17333,8 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >
 >   在这个例子中，`producer` 使用 `std::memory_order_release` 存储数据，`consumer` 使用 `std::memory_order_acquire` 加载数据。这两种内存顺序模型维护了依赖关系，并且通过原子操作避免了使用锁。
 >
+>   **这部分先做了解，不必完全理解。**
+>
 >   ****
 >
 >    **依赖关系的总结：**
@@ -17402,24 +17472,286 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 
 >   头文件是为子系统或代码段提供抽象接口的一种机制。使用头文件需要注意的一点是：**要避免循环引用或多次包含同一个头文件。**
 >
+>   例如，假设 A.h 包含 Logger.h，里面定义了一个 Logger 类；B.h 也包括 Logger.ho 如果有一个源文件 App.cpp包含 A.h 和 B.h，最终将得到 Logger 类的重复定义，因为 A.h 和 B.h 都包含 Logger.h 头文件。  
+>
+>   可使用文件保护机制(include guards)来避免重复定义。下面的代码片段显示了包含文件保护机制的 Logger.h 头文件。在每个头文件的开头，用后用 #ifdef 指令检测是否还没有定义某个键值。如果这个键值己经定义，编译器将跳到对应的 #endif，这个指令通常位于文件的结尾。如果这个键值没有定义，头文件将定义这个键值，这样以后包含的同一文件就会被忽略：
+>
+>   ```c++
+>   #ifdef LOFFER_H
+>   #define LOGGER_H
 >   
+>   class Logger
+>   {
+>       // ...
+>   };
+>   
+>   #endif	// LOGGER_H
+>   ```
+>
+>   如今，几乎所有编译器都支持 `#pragma once` 指令(该指令可替代前面的文件保护机制)，例如：
+>
+>   ```c++
+>   #pragma once
+>   
+>   class Logger
+>   {
+>       // ...
+>   };
+>   ```
+>
+>   **前置声明(forward declaration)** 是另一个避免产生头文件问题的工具。如果需要使用某个类，但是无法包含它的头文件(例如，这个类严重依赖当前编写的类，这种情况是典型的**循环依赖问题**，这是无法包含头文件的一个常见原因。)，就可告诉编译器存在这么一个类，但是无法使用 #include 机制提供正式的定义。当然，在代码中无法真正地使用这个类，因为编译器对此一无所知，只知道在链接之后存在这个己命名的类。然而，仍可在代码中使用这个类的指针或引用。
+>
+>   即，在前置声明的情况下，你**只能通过指针或引用**使用这个类型，不能直接创建对象或访问其成员。也就是说，编译器不知道这个类的内存布局，所以无法在没有完整定义的情况下进行实例化或调用成员函数。
+>
+>   也可声明函数，使其按值返回这种前置声明类，或将这种前置声明类作为按值传递的函数参数。当然，定义函数的代码以及调用函数的任何代码都需要添加正确的头文件，在头文件中要正确定义前置声明类。
+>
+>   **循环依赖问题：**
+>
+>   假设你有两个类 `A` 和 `B`，它们互相依赖：
+>
+>   ```cpp
+>   // A.h
+>   #include "B.h"
+>   class A {
+>       B* b;  // A 依赖于 B
+>   };
+>   
+>   // B.h
+>   #include "A.h"
+>   class B {
+>       A* a;  // B 依赖于 A
+>   };
+>   ```
+>
+>   在这种情况下，`A.h` 包含了 `B.h`，而 `B.h` 又包含了 `A.h`。这种相互包含会导致编译器陷入循环，无法正确解析两个类的定义，最终会报错。
+>
+>   **前置声明的作用：**
+>
+>   前置声明通过告诉编译器 "这里有一个类 `B`，你不用现在知道它的具体实现，只需知道它存在"，可以打破这个循环依赖。
+>
+>   ```cpp
+>   // A.h
+>   class B;  // 前置声明 B 类
+>   class A {
+>       B* b;  // 可以使用 B 的指针或者引用，而不需要包含 B 的头文件
+>   };
+>   ```
+>
+>   **作用：**
+>
+>   1. **避免循环依赖**：当两个类互相依赖时，如果直接包含对方的头文件，会导致循环依赖，而前置声明可以避免这一点。
+>      
+>   2. **减少编译开销**：有时候头文件很复杂，包含大量的依赖，或者它可能只在实现文件（`.cpp`）中被真正需要。如果我们在头文件中只需要知道某个类的存在，并不需要它的完整定义，就可以通过前置声明来减少不必要的头文件包含，加快编译速度。
+>
+>   3. **更好的模块化**：前置声明可以帮助你将实现细节隐藏在源文件中，而不是暴露给每个包含头文件的文件，这样可以更好地控制依赖关系，保持代码的简洁性。
+>
+>   **限制：**
+>
+>   - 前置声明的类只能通过**指针**或**引用**使用，不能直接使用它的对象（因为编译器并不知道类的内存布局）。
+>   - 如果需要访问类的成员（比如函数调用），仍然需要包含头文件，因为这时需要完整的类定义。
+>
+>   ****
+>
+>   例如，假设 Logger 类使用另一个类 Preferences(跟踪用户设置)。Preferences 类又使用 Logger 类，由于产生了循环依赖，因此无法使用文件保护机制来解决。此时需要使用前置声明。在下面的代码中，Logger.h 头文件为 Preferences 类使用前置声明，后来在引用 Preferences 类时未包含其头文件：
+>
+>   ```c++
+>   #pragma once 
+>   
+>   #inlcude <string_view>
+>   
+>   class Preferences;	// forward declaration
+>   
+>   class Logger
+>   {
+>   public:
+>   	static void setPreferences(const Preferences& prefs);
+>   	static void logError(std::string_view error);
+>   };
+>   ```
+>
+>   建议尽可能在头文件中使用前置声明，而不是包含其他头文件。这可减少编译和重编译时间，因为破坏了一个头文件对其他头文件的依赖。当然，实现文件需要包含前置声明类的正确头文件，否则就不能编译。
+>
+>   为了查询是否存在某个头文件，C++17 添加了 `__has_include("filename")` 和 `__has_include(<filename>)` 预处理器常量。如果头文件存在，这些常量的结果就是 1；如果肉文件不存在，常量的结果就是 0。例如，在为 C++17 完全批准 `<optional>` 头文件之前，存在预备版本 `<experimental/optional>`。可以使用 `__has_include()` 来检查系统上有哪个头文件：
+>
+>   ```c++
+>   #if __has_include (<optional>)
+>   	#include <optional>
+>   #elseif __has_include (<experimental/optional>)
+>   	#include <experimental/optional>
+>   #endif
+>   ```
 
 ****
 
 ### 11.8 C 的实用工具
 
+>某些晦涩的 C 功能在 C++ 中也可以使用，并且在某些情况下仍然有用。这些“历史包袱”，确实引发了一些批评，但它也提供了极大的灵活性。
 >
+>本节将讲述两个功能：变长参数列表(variable-length argument lists) 和 预处理器宏(preprocessor macros)。
 
 ****
 
 #### 8.1变长参数列表
 
+>本节介绍 旧的 C 风格变长参数列表。我们需要理解它的运行方式，因为在比较老的代码中会看到它们。
 >
+>然而，在新的代码中应该通过 `variadic` 模板使用类型安全的变长参数列表，`variadic` 模板将在第 22 章介绍。
+>
+>考虑 `<cstdio>` 中的 C 函数 printf()。可使用任意数量的参数调用这个函数：
+>
+>```c++
+>printf("int %d\n", 5);
+>printf("String %s and int %d\n", "hello", 5);
+>printf("Many ints: %d, %d, %d, %d, %d", 1, 2, 3, 4, 5);
+>```
+>
+>C/C++ 提供了语法和一些实用宏，以编写参数数目可变的自定义函数，这些函数通常看上去很像 `printf()`。尽管并非经常需要，但偶尔也需要这样的功能。例如，假定要编写一个快速测试函数，如果设置了调试标记，这个函数像 `stderr` 输出字符串，如果没有设置调试标志，就什么都不做。与 `printf()` 一样，这个函数应能接收任意数目和类型的参数并输出字符串。这个函数的简单实现如下所示：
+>
+>```c++
+>#include <cstdio>
+>#include <cstdarg>
+>
+>bool debug = false;
+>
+>void debugOut(const char* str, ...)
+>{
+>    va_list ap;
+>    if (debug)
+>    {
+>        va_start(ap, str);
+>        vfprintf(stderr, str, ap);
+>        va_end(ap);
+>    }
+>}
+>```
+>
+>-   `debugOut` 函数的原型包含一个命名参数 `str`，后面紧跟省略号 `...`，表示函数可以接受任意数量和类型的额外参数。为了访问这些可变参数，必须使用 `<cstdarg>` 头文件中定义的宏。
+>-   声明一个 `va_list` 类型的变量，然后使用 `va_start()` 初始化它。需要注意的是，`va_start()` 的第二个参数必须是参数列表中最右边的已命名参数。在任何具有可变参数列表的函数中，必须至少包含一个命名参数。
+>-   在 `debugOut` 函数中，参数列表会传递给标准库中的 `vfprintf()` 函数进行处理。当 `vfprintf()` 返回后，`debugOut` 会调用 `va_end()` 来结束对变长参数列表的访问。调用 `va_start()` 后必须配对调用 `va_end()`，以确保函数结束后堆栈保持稳定状态。
+>
+>这个函数的用法如下：
+>
+>```c++
+>debug = true;
+>debugOut("int &d\n", 5);
+>debugOut("String %s and int %d\n", "hello", 5);
+>debugOut("Many ints: %d, %d, %d, %d, %d", 1, 2, 3, 4, 5);
+>```
+
+##### 1.访问参数
+
+>   如果需要手动访问传递的实参，可以使用 `va_arg()`。它的第一个参数是 `va_list` 类型的变量，第二个参数是你希望截取的参数的类型。然而，变长参数列表有一个问题：没有明确的方法指示参数列表何时结束。
+>
+>   为了解决这个问题，可以采用多种方法，比如：
+>   - 第一个参数用于指示后面参数的数量；
+>   - 或者当参数是一组指针时，要求最后一个指针为 `nullptr`。
+>
+>   虽然方法很多，但这些方法对程序员来说都较为繁琐。以下示例演示了一种技术，调用者在第一个命名参数中指定了提供的参数数量。该函数可以接收任意数量的整数，并将其输出：
+>
+>   ```cpp
+>   void printInts(size_t num, ...) 
+>   {
+>       int temp;
+>       va_list ap;
+>       va_start(ap, num);
+>       for (size_t i = 0; i < num; ++i) 
+>       {
+>           temp = va_arg(ap, int);  // 获取当前参数
+>           cout << temp << " ";     // 输出当前参数
+>       }
+>       va_end(ap);  // 结束变长参数的访问
+>       cout << endl;
+>   }
+>   ```
+>
+>   调用该函数时，必须在第一个参数中指定后续参数的数量，例如：
+>
+>   ```cpp
+>   printInts(5, 5, 4, 3, 2, 1);
+>   ```
+>
+
+##### 2. 为什么不建议使用 C 风格的变长参数列表
+
+>   C 风格的变长参数列表虽然灵活，但不够安全。通过 `printInts()` 函数可以看到，这种方法存在以下风险：
+>
+>   - **无法确定参数的数量**  
+>     
+>     在 `printInts()` 中，必须依赖调用者提供的第一个参数，且相信实际传递的参数数量与该值一致。同样，在 `debugOut()` 中，必须假设传递的参数数量与格式字符串中的格式说明符一致。
+>     
+>   - **无法确定参数的类型**  
+>
+>     `va_arg()` 需要指定类型来解释当前参数的值，但程序无法验证该类型是否正确。如果传递了不匹配的类型，`va_arg()` 可能会错误地解释参数，导致程序崩溃或行为异常。
+>
+
+**警告：**
+
+>   避免使用 C 风格的变长参数列表。
+>
+>   传递 `std::array`、值矢量或者使用第 1 章介绍的初始化列表可能会更好一些，也可以通过 `variadic` 模板使用类型安全的变长参数列表，这一部分内容将在第 22 章讲述。
 
 ****
 
 #### 8.2预处理器宏
 
+>C++ 允许使用预处理器编写宏，这与函数有些相似。以下是一个简单的宏示例：
+>
+>```cpp
+>#define SQUARE(x) ((x) * (x))  // 宏定义后不需要分号
+>```
+>
+>在 `main()` 函数中，可以使用该宏：
+>
+>```cpp
+>int main() {
+>    cout << SQUARE(5) << endl;  // 输出 25
+>    return 0;
+>}
+>```
+>
+>宏是 C 语言遗留下来的特性，功能类似于内联函数，但它不进行类型检查。当调用宏时，预处理器会自动用扩展式替换，不会真正应用函数调用的语义，这可能导致不可预测的结果。例如，如果使用表达式 `2 + 3` 而不是直接使用 `5` 调用 `SQUARE` 宏，代码如下：
+>
+>```cpp
+>cout << SQUARE(2 + 3) << endl;  // 计算结果为 25
+>```
+>
+>如果宏定义中省略了部分圆括号，改为：
+>
+>```cpp
+>#define SQUARE(x) (x * x)
+>```
+>
+>那么调用 `SQUARE(2 + 3)` 的结果将变为 `11`，而不是 `25`。这是因为宏只是进行简单的文本替换，并不考虑函数调用的语义。`x` 在宏中被替换为 `2 + 3`，扩展后变成：
+>
+>```cpp
+>cout << (2 + 3 * 2 + 3) << endl;  // 计算结果为 11
+>```
+>
+>根据运算优先级，乘法会先执行，然后是加法，最终结果为 `11`。
+>
+>**性能问题：**
+>
+>使用宏还可能影响性能。例如，如果按以下方式调用 `SQUARE` 宏：
+>
+>```cpp
+>cout << SQUARE(veryExpensiveFunctionCallToComputeNumber()) << endl;
+>```
+>
+>预处理器将其替换为：
+>
+>```cpp
+>cout << ((veryExpensiveFunctionCallToComputeNumber()) * (veryExpensiveFunctionCallToComputeNumber())) << endl;
+>```
+>
+>这将导致开销很大的函数调用两次，而不是一次。这是避免使用宏的另一个原因。
+>
+>**调试问题：**
+>
+>宏还可能导致调试问题，因为编写的代码并非编译器看到的代码，调试工具中显示的也是经过预处理的结果。因此，建议用内联函数替代宏。提及宏的原因在于，许多 C++ 代码仍然使用宏，因此理解它们对于阅读和维护代码是必要的。
+>
+>**预处理器输出：**
+>
+>某些编译器可以将经过预处理器处理的源代码输出到某个文件。使用这个文件可以观察预处理器如何处理代码。例如，在 Microsoft VC++ 中使用 `/P` 选项，在 GCC 中使用 `-E` 选项。
 >
 
 ****
