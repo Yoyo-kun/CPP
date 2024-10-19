@@ -2,6 +2,8 @@
 
 ***
 
+[跳转到当前编辑位置](######当前编辑位置)
+
 便签：
 
 使用高级方法第 9 章的零规则，前面的努力很大程度上都只是在为了迁就一些较为落后的代码语法，但是逐渐在被淘汰的！！！
@@ -154,7 +156,7 @@ int main()
 >     > - ```c++
 >     >     #ifdef [key]
 >     >     #endif
->     >                 
+>     >                     
 >     >     #ifndef [key]
 >     >     #endif
 >     >     // ifdef("if defined") 块或 ifndef("if not defined") 块中的代码被有条件地包含或者舍弃；
@@ -6173,20 +6175,20 @@ int main()
 >         // 为指向 Simple指针 的数组分配空间，来存储 Simple指针
 >         const size_t size = 4;
 >         Simple** mySimplePtrArray = new Simple * [size];
->                     
+>                         
 >         // Allocate an object for each pointer.
 >         for (size_t i = 0; i < size; i++)
 >         {
 >         	mySimplePtrArray[i] = new Simple();
 >         }
 >         // Use mySimplePtrArray...
->                     
+>                         
 >         // Delete each allocated object.
 >         for (size_t i = 0; i < size; i++)
 >         {
 >         	delete mySimplePtrArray[i];
 >         }
->                     
+>                         
 >         // Delete the array itself.
 >         delete[] mySimplePtrArray;
 >         mySimplePtrArray = nullptr;
@@ -6749,13 +6751,13 @@ int main()
 >     	*p = value;
 >     	return p;
 >     }
->                 
+>                     
 >     int main()
 >     {
 >     	std::unique_ptr<int, decltype(free)*> myIntSmartPtr(malloc_int(42), free);
 >     	return 0;
 >     }
->                 
+>                     
 >     // 模板类型参数自定义 deleter：
 >     std::unique_ptr<T, Deleter> myPtr(new T, myCustomDeleter);
 >     // T 是智能指针所管理资源的类型。
@@ -6774,27 +6776,27 @@ int main()
 >     ```c++
 >     #include <iostream>
 >     #include <memory>
->                 
+>                     
 >     // 虚拟文件类
 >     class VirtualFile {
 >     public:
 >     	VirtualFile(const std::string& filename) : filename(filename) {
 >     		std::cout << "Opening file: " << filename << std::endl;
 >     	}
->                 
+>                     
 >     	~VirtualFile() {
 >     		std::cout << "Closing file: " << filename << std::endl;
 >     	}
->                 
+>                     
 >     	void write(const std::string& data) {
 >     		std::cout << "Writing to file: " << filename << std::endl;
 >     		// 写入操作
 >     	}
->                 
+>                     
 >     private:
 >     	std::string filename;
 >     };
->                 
+>                     
 >     // 自定义 deleter 函数
 >     void closeVirtualFile(VirtualFile* file)
 >     {
@@ -6803,14 +6805,14 @@ int main()
 >     		delete file;
 >     	}
 >     }
->                 
+>                     
 >     int main() {
 >     	// 使用自定义 deleter 的 unique_ptr
 >     	std::unique_ptr<VirtualFile, decltype(&closeVirtualFile)> filePtr(new VirtualFile("example.txt"), &closeVirtualFile);
->                 
+>                     
 >     	// 使用文件句柄进行操作
 >     	filePtr->write("Hello, World!");
->                 
+>                     
 >     	// unique_ptr 离开作用域时，closeVirtualFile 将被调用
 >     	return 0;
 >     }
@@ -7098,26 +7100,26 @@ int main()
 >         {
 >         	// ComplexResource class definition
 >         };
->                     
+>                         
 >         class ResourceManager
 >         {
 >         private:
 >         	std::shared_ptr<ComplexResource> sharedResource;
->                     
+>                         
 >         public:
 >         	void initialize()
 >         	{
 >         		sharedResource = std::make_shared<ComplexResource>();
 >         	}
->                     
+>                         
 >         	void useResource()
 >         	{
 >         		// 使用资源的逻辑
 >         	}
->                     
+>                         
 >         	// 其他复杂的资源管理逻辑
 >         };
->                     
+>                         
 >         ResourceManager manager1;
 >         ResourceManager manager2 = manager1;  // 共享所有权
 >         ```
@@ -7135,7 +7137,7 @@ int main()
 >     	Foo(int value) : mData(value) {}
 >     	int mData;
 >     }
->                 
+>                     
 >     auto foo = make_shared<Foo>(42);
 >     auto aliasing = shared_ptr<int>(foo, &foo->mData);
 >     ```
@@ -7293,14 +7295,14 @@ int main()
 >
 >     ```c++
 >     cppCopy codeclass Observer;
->                 
+>                     
 >     class Subject
 >     {
 >     public:
 >     	void addObserver(std::weak_ptr<Observer> observer);
 >     	void notifyObservers();
 >     };
->                 
+>                     
 >     class Observer
 >     {
 >     public:
@@ -7315,7 +7317,7 @@ int main()
 >     {
 >     private:
 >     	std::weak_ptr<Resource> cachedResource;
->                 
+>                     
 >     public:
 >     	std::shared_ptr<Resource> getResource()
 >     	{
@@ -8028,7 +8030,7 @@ int main()
 >     {
 >     	this->value = value;
 >     }
->                 
+>                     
 >     // 然而，如果遵循第 3 章所讲述的命名规则，那么永远不会遇到这样的问题
 >     ```
 >
@@ -8225,7 +8227,7 @@ int main()
 >         ```C++
 >         auto smartCellp = make_unique<SpreadsheetCell>(4);
 >         // ... do something with the cell, no need to delete the smart pointer.
->                     
+>                         
 >         // Or with raw pointers, without smart pointers (not recommended)
 >         SpreadsheetCell* myCellp = new SpreadsheetCell(5);
 >         SpreadsheetCell* anotherCellp = nullptr;
@@ -8235,7 +8237,7 @@ int main()
 >         myCellp = nullptr;
 >         delete anotherCellp;
 >         anotherCellp = nullptr;
->                     
+>                         
 >         // 注意可以声明一个指向 SpreadsheetCell 对象的指针，而不立即调用构造函数。堆栈中对象在声明时会调用构造函数
 >         ```
 >
@@ -9104,7 +9106,7 @@ int main()
 >     SpreadsheetCell::SpreadsheetCell(const SpreadsheetCell& src)
 >     	: mValue(src.mValue)
 >     {
->                 
+>                     
 >     }
 >     ```
 
@@ -9541,7 +9543,7 @@ int main()
 >     	Spreadsheet(size_t width, size_t height);
 >     	Spreadsheet(const Spreadsheet& src) = delete;
 >     	~Spreadsheet();
->                 
+>                     
 >     	Spreadsheet& operator=(const Spreadsheet& rhs) = delete;
 >     	// Code omitted for brevity
 >     };
@@ -10617,7 +10619,7 @@ int main()
 >       	explicit SpreadsheetCell(std::string_view initialValue);
 >       	// Remainder omitted for brevity
 >       };
->                   
+>                       
 >       /* explicit 关键字只在类定义内使用，只适用于只有一个参数的构造函数，例如单参构造函数或为参数提供默认值的多参构造函数。*/
 >       ```
 >
@@ -10639,7 +10641,7 @@ int main()
 >       aThirdCell = myCell + 5.6; // Works fine.
 >       aThirdCell = 4 + myCell; // FAILS TO COMPILE!
 >       aThirdCell = 5.6 + myCell; // FAILS TO COMPILE!
->                   
+>                       
 >       /*当 Spreadsheetcell 对象在运算符的左边时，隐式转换正常运行，但在右边时无法运行。加法是可互换的，因此这里存在错误。问题在于必须在 SpreadsheetCell 对象上调用 operator+方法，对象必须在 operato什的左边。这是 C++语言定义的方式，因此使用 operator+ 方法无法让上面的代码运行。*/
 >       ```
 >
@@ -10660,7 +10662,7 @@ int main()
 >       {
 >       	// Omitted for brevity
 >       };
->                   
+>                       
 >       SpreadsheetCell operator+(const SpreadsheetCell& Ihs, const SpreadsheetCell& rhs);
 >       ```
 >
@@ -11211,11 +11213,11 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >       public:
 >       	void foo() { }
 >       };
->                   
+>                       
 >       class Derived : protected Base 
 >       {
 >       };
->                   
+>                       
 >       Derived d;
 >       // d.foo(); // 错误：无法从外部访问 foo，因为它变成了 protected
 >       ```
@@ -13828,7 +13830,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->                       
+>                           
 >           class Base
 >           {
 >           public:
@@ -13837,7 +13839,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Base::staticFunction called" << endl;
 >           	}
 >           };
->                       
+>                           
 >           class Derived : public Base
 >           {
 >           public:
@@ -13846,7 +13848,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Derived::staticFunction called" << endl;
 >           	}
 >           };
->                       
+>                           
 >           int main()
 >           {
 >           	Derived::staticFunction();  // 编译时确定，调用 Derived 的静态函数
@@ -13866,7 +13868,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->                       
+>                           
 >           class Base
 >           {
 >           public:
@@ -13875,7 +13877,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Base::nonVirtualFunction called" << endl;
 >           	}
 >           };
->                       
+>                           
 >           class Derived : public Base
 >           {
 >           public:
@@ -13884,7 +13886,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Derived::nonVirtualFunction called" << endl;
 >           	}
 >           };
->                       
+>                           
 >           int main()
 >           {
 >           	Base* ptr = new Derived();
@@ -13905,7 +13907,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->                       
+>                           
 >           class Base
 >           {
 >           public:
@@ -13914,7 +13916,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Base::virtualFunction called" << endl;
 >           	}
 >           };
->                       
+>                           
 >           class Derived : public Base
 >           {
 >           public:
@@ -13923,7 +13925,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Derived::virtualFunction called" << endl;
 >           	}
 >           };
->                       
+>                           
 >           int main()
 >           {
 >           	Base* ptr = new Derived();
@@ -13944,7 +13946,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->                       
+>                           
 >           class Base
 >           {
 >           public:
@@ -13953,7 +13955,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Base: " << x << endl;
 >           	}
 >           };
->                       
+>                           
 >           class Derived : public Base
 >           {
 >           public:
@@ -13962,7 +13964,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           		cout << "Derived: " << x << endl;
 >           	}
 >           };
->                       
+>                           
 >           int main()
 >           {
 >           	Base* ptr = new Derived();
@@ -13983,13 +13985,13 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->                       
+>                           
 >           template <typename T>
 >           T add(T a, T b)
 >           {
 >           	return a + b;
 >           }
->                       
+>                           
 >           int main()
 >           {
 >           	cout << add(5, 3) << endl;  // 编译时确定，生成 int add(int, int)
@@ -14037,12 +14039,12 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->                       
+>                           
 >           inline void printInline()
 >           {
 >           	cout << "Inline function called" << endl;
 >           }
->                       
+>                           
 >           int main()
 >           {
 >           	printInline();  // 编译时决定是否展开为内联代码
@@ -14061,12 +14063,12 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->                       
+>                           
 >           int main()
 >           {
 >           	auto x = 5;  // 编译时确定类型为 int
 >           	auto y = 3.14;  // 编译时确定类型为 double
->                       
+>                           
 >           	cout << x << " " << y << endl;
 >           	return 0;
 >           }
@@ -14083,19 +14085,19 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           ```c++
 >           #include <iostream>
 >           using namespace std;
->                       
+>                           
 >           class Base
 >           {
 >           	virtual void dummy() {}  // 必须有虚函数才能使用 dynamic_cast
 >           };
->                       
+>                           
 >           class Derived : public Base {};
->                       
+>                           
 >           int main()
 >           {
 >           	Base* basePtr = new Derived();
 >           	Derived* derivedPtr = dynamic_cast<Derived*>(basePtr);  // 运行时确定
->                       
+>                           
 >           	if (derivedPtr)
 >           	{
 >           		cout << "Successful cast" << endl;
@@ -14104,7 +14106,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           	{
 >           		cout << "Failed cast" << endl;
 >           	}
->                       
+>                           
 >           	delete basePtr;
 >           	return 0;
 >           }
@@ -14122,19 +14124,19 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >           #include <iostream>
 >           #include <typeinfo>
 >           using namespace std;
->                                   
+>                                           
 >           class Base
 >           {
 >           public:
 >           	virtual ~Base() = default;
 >           };
->                                   
+>                                           
 >           class Derived : public Base {};
->                                   
+>                                           
 >           int main()
 >           {
 >           	Base* basePtr = new Derived();
->                                   
+>                                           
 >           	cout << "Type of basePtr: " << typeid(*basePtr).name() << endl;  // 运行时确定类型
 >           	delete basePtr;
 >           	return 0;
@@ -15033,7 +15035,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >       {
 >       	int pub;
 >       };
->                   
+>                       
 >       struct Derived : Base
 >       {  // 默认 public 继承
 >       	void func()
@@ -15107,7 +15109,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >       		/* 启动引擎的代码 */
 >       	}
 >       };
->                   
+>                       
 >       class Fuselage
 >       {
 >       public:
@@ -15116,7 +15118,7 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 >       		/* 修理机身的代码 */
 >       	}
 >       };
->                   
+>                       
 >       class Airplane : protected Engine, protected Fuselage
 >       {
 >       public:
@@ -17759,6 +17761,8 @@ bool operator>=(const Spreadsheetcell& Ihs, const Spreadsheetcell& rhs)
 ### 11.9本章小结
 
 >   本章讲述了 C++中一些容易让人迷惑的特性。阅读本章，你会了解大量的 C++语法细节。有些信息会在程序中经常用到，例如引用、const、作用域解析、C++风格的类型转换以及与头文件有关的技巧。还有些信息一定要理解，但是不应该在程序中经常使用，例如 static 和 extern、如何编写 C 风格的变长参数列表、如何编写预处理器宏。  
+
+###### 当前编辑位置
 
 ****
 
