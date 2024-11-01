@@ -1,14 +1,18 @@
-This tutorial is based on the content of Marc Gregoire's Professional C++, 4th Edition, based on C++17. There may be some errors. Please correct them.
+This tutorial is based on *Professional C++*, 4th Edition by Marc Gregoire, focusing on C++17. While I’ve made every effort to present the information accurately, there may still be some unintentional errors—please feel free to correct them.
 
-此教程是基于 Marc Gregoire 的 Professional C++, 4th Edition 内容，可能存在部分错误，望斧正。
+此教程基于 Marc Gregoire 的 *Professional C++* 第四版，内容聚焦于 C++17。尽管我已尽力准确呈现信息，但可能仍存在一些无意的错误，欢迎指正。
 
-Because of my poor English, concerned about misunderstandings, I could just learn the edition with Chinese translation.While I finish it, I will learn the 5th Edition, based on C++20.
+My current study uses the Chinese translation of the 4th Edition, as my English skills limit my ability to avoid misunderstandings. Once I complete this edition, I plan to transition to the original English 5th Edition, which covers C++20.
 
-由于我的英语水平有限，担心出现理解错误，我只能学习带有中文翻译的版本。等我学完它之后，我会学习最新第六版的英文原版。
+目前我使用的是第四版的中文版，因为我的英语水平有限，担心会出现理解偏差。等我学完这一版后，我计划学习基于 C++20 的英文原版第五版。
 
-Update approximately once a week.
+As for C++23, it is still very new, with some features in early blueprint stages and incomplete compiler support. I will wait to study C++23 until it becomes more widely adopted and necessary for practical use.
 
-大约每周更新一次。
+至于 C++23，标准仍然较新，部分特性还处于蓝图阶段，编译器支持也不完全。因此，我会等到它在实际应用中被广泛采用后再学习。
+
+I aim to update this tutorial approximately once a week.
+
+我计划每周更新此教程。
 
 E-mail: yoyo.lmy.11@gmail.com
 
