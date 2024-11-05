@@ -1,3 +1,37 @@
+附上一首小诗：
+
+静静地躺在抽屉里
+
+许多年了。我轻轻按动
+
+你还像个愤青一样
+
+弹跳起来。锋芒还在
+
+刀刃还在，而我已不会
+
+提着你到处找仇人了
+
+岁月就这么过去
+
+曾经涌动的血
+
+如今像黄酒一样
+
+温润。秋风萧瑟，独自沉沦
+
+没人知道你的隐忍
+
+更没人知道刀起刀落的
+
+往事。今夜我怀揣着你
+
+一个人看海，喝酒
+
+你是否感到一丝温暖？
+
+****
+
 This tutorial is based on *Professional C++*, 4th Edition by Marc Gregoire, focusing on C++17. While I’ve made every effort to present the information accurately, there may still be some unintentional errors—please feel free to correct them.
 
 此教程基于 Marc Gregoire 的 *Professional C++* 第四版，内容聚焦于 C++17。尽管我已尽力准确呈现信息，但可能仍存在一些无意的错误，欢迎指正。
